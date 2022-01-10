@@ -4,7 +4,7 @@
     <br>
 </p>
 
-El siguiente proyecto esta desarrollado para ser presentado como prueba técnica para EOR y ha sido desarrollado con Visual Studio 2019, en Asp.Net con MVC 5 y como lenguaje de programación base Visual Basic.
+El siguiente proyecto esta desarrollado para ser presentado como prueba técnica para EOR y ha sido desarrollado con Visual Studio 2019 con .Net Framework 4.7.2 en Asp.Net con MVC 5 y como lenguaje de programación base Visual Basic.
 Además se ha utilizado Entity Framework 6 para el manejo de la base de datos. La base de datos ha sido desarrollada en SQL Server.
 
 La estructura del proyecto es la siguiente:
