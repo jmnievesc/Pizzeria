@@ -22,7 +22,6 @@ Partial Public Class PizzeriaEntities
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property DetallesOrden() As DbSet(Of DetalleOrden)
     Public Overridable Property Ordenes() As DbSet(Of Orden)
     Public Overridable Property TiposPizza() As DbSet(Of TipoPizza)
 

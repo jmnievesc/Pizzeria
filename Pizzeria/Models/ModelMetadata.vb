@@ -23,7 +23,12 @@ End Class
 
 <MetadataType(GetType(OrdenMetadata))>
 Partial Public Class Orden
+    Public ReadOnly Property NombreEstado As String
+        Get
+            Return Helpers.Utils.NombreEstado(Me.Estado)
 
+        End Get
+    End Property
 
 End Class
 
@@ -38,4 +43,11 @@ Public Class OrdenMetadata
 
     <Display(Name:="Dirección de envío")>
     Public Property DireccionEnvio As String
+
+    <Display(Name:="Tipo de pizza")>
+    Public Property IdTipoPizza As Integer
+
+
+    <Display(Name:="Estado")>
+    Public Property NombreEstado As Integer
 End Class

@@ -18,7 +18,9 @@ Partial Public Class Orden
     Public Property DireccionEnvio As String
     Public Property Comentarios As String
     Public Property Estado As Integer
+    Public Property IdTipoPizza As Integer
+    Public Property Cantidad As Integer
 
-    Public Overridable Property DetallesOrden As ICollection(Of DetalleOrden) = New HashSet(Of DetalleOrden)
+    Public Overridable Property TipoPizza As TipoPizza
 
 End Class

@@ -18,6 +18,6 @@ Partial Public Class TipoPizza
     Public Property Precio As Decimal
     Public Property Tamanio As String
 
-    Public Overridable Property DetallesOrden As ICollection(Of DetalleOrden) = New HashSet(Of DetalleOrden)
+    Public Overridable Property Ordens As ICollection(Of Orden) = New HashSet(Of Orden)
 
 End Class

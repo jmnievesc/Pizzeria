@@ -5,12 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d0977558ef56465ba4b6e9f51871a3d7" Name="Diagram1">
-        <EntityTypeShape EntityType="PizzeriaModel.DetalleOrden" Width="1.5" PointX="3.25" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PizzeriaModel.Orden" Width="1.5" PointX="5.625" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PizzeriaModel.TipoPizza" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <AssociationConnector Association="PizzeriaModel.FK_DetalleOrden_Orden" ManuallyRouted="false" />
-        <AssociationConnector Association="PizzeriaModel.FK_DetalleOrden_TipoPizza" ManuallyRouted="false" />
-      </Diagram>
+        <AssociationConnector Association="PizzeriaModel.FK_Orden_TipoPizza" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

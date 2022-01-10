@@ -54,12 +54,12 @@ End Code
         </dt>
 
         <dd>
-            @Html.DisplayFor(Function(model) model.Estado)
+            @Html.DisplayNameFor(Function(model) model.NombreEstado)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", New With { .id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", New With {.id = Model.Id}, New With {.class = "btn btn-info"})
+    @Html.ActionLink("Regresar", "Index", "", New With {.class = "btn btn-warning"})
 </p>

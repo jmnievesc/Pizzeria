@@ -163,10 +163,8 @@
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Utils.vb" />
     <Compile Include="Models\ModelMetadata.vb" />
-    <Compile Include="Models\DetalleOrden.vb">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Model.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -9,9 +9,14 @@ Imports System.Web.Mvc
 Imports Pizzeria
 
 Namespace Controllers
+    ''' <summary>
+    ''' Controlador para ordenes de pizza
+    ''' </summary>
     Public Class OrdenesController
         Inherits System.Web.Mvc.Controller
-
+        ''' <summary>
+        ''' Atributo que permite la conexión a la base de datos.
+        ''' </summary>
         Private db As New PizzeriaEntities
 
         ' GET: Ordenes
@@ -35,14 +40,10 @@ Namespace Controllers
         Function Create() As ActionResult
             Dim orden As New Orden()
             Dim ultimaOrden As Orden
+            ''Se busca la ultima orden ingresada para calcular el siguiente correlativo de orden.
             ultimaOrden = db.Ordenes.OrderByDescending(Function(x) x.Numero).FirstOrDefault()
-            If IsNothing(ultimaOrden) Then
-                orden.Numero = 1
-            Else
-                orden.Numero = ultimaOrden.Numero + 1
-            End If
-
-
+            orden.Numero = IIf(IsNothing(ultimaOrden), 1, ultimaOrden.Numero + 1)
+            ViewBag.TiposPizza = New SelectList(db.TiposPizza.OrderBy(Function(x) x.Nombre).ToList, "Id", "Nombre")
             Return View(orden)
         End Function
 
@@ -53,11 +54,14 @@ Namespace Controllers
         <ValidateAntiForgeryToken()>
         Function Create(<Bind(Include:="Id,Numero,NombreCliente,Fecha,DireccionEnvio,Comentarios,Estado")> ByVal orden As Orden) As ActionResult
             orden.Fecha = DateTime.Now
+            orden.Estado = 0
             If ModelState.IsValid Then
                 db.Ordenes.Add(orden)
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
+
+            ViewBag.TiposPizza = New SelectList(db.TiposPizza.OrderBy(Function(x) x.Nombre).ToList, "Id", "Nombre")
             Return View(orden)
         End Function
 
@@ -70,6 +74,7 @@ Namespace Controllers
             If IsNothing(orden) Then
                 Return HttpNotFound()
             End If
+            ViewBag.TiposPizza = New SelectList(db.TiposPizza.OrderBy(Function(x) x.Nombre).ToList, "Id", "Nombre")
             Return View(orden)
         End Function
 
@@ -78,12 +83,15 @@ Namespace Controllers
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
-        Function Edit(<Bind(Include:="Id,Numero,NombreCliente,Fecha,DireccionEnvio,Comentarios,Estado")> ByVal orden As Orden) As ActionResult
+        Function Edit(<Bind(Include:="Id,Numero,NombreCliente,Fecha,DireccionEnvio,Comentarios,Estado,IdTipoPizza,Cantidad")> ByVal orden As Orden) As ActionResult
             If ModelState.IsValid Then
                 db.Entry(orden).State = EntityState.Modified
+                db.Entry(orden).Property(Function(o) o.Fecha).IsModified = False
+                db.Entry(orden).Property(Function(o) o.Estado).IsModified = False
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
+            ViewBag.TiposPizza = New SelectList(db.TiposPizza.OrderBy(Function(x) x.Nombre).ToList, "Id", "Nombre")
             Return View(orden)
         End Function
 
