@@ -24,5 +24,10 @@ Partial Public Class PizzeriaEntities
 
     Public Overridable Property Ordenes() As DbSet(Of Orden)
     Public Overridable Property TiposPizza() As DbSet(Of TipoPizza)
+    Public Overridable Property Acciones() As DbSet(Of Accion)
+    Public Overridable Property Controladores() As DbSet(Of Controlador)
+    Public Overridable Property Permisos() As DbSet(Of Permiso)
+    Public Overridable Property Roles() As DbSet(Of Rol)
+    Public Overridable Property Usuarios() As DbSet(Of Usuario)
 
 End Class

@@ -10,19 +10,14 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Orden
+Partial Public Class Usuario
     Public Property Id As Integer
-    Public Property Numero As Integer
-    Public Property NombreCliente As String
-    Public Property Fecha As Date
-    Public Property DireccionEnvio As String
-    Public Property Comentarios As String
-    Public Property Estado As Integer
-    Public Property IdTipoPizza As Integer
-    Public Property Cantidad As Integer
-    Public Property IdUsuario As Integer
+    Public Property NombreUsuario As String
+    Public Property Activo As Boolean
+    Public Property IdRol As Integer
+    Public Property Password As String
 
-    Public Overridable Property TipoPizza As TipoPizza
-    Public Overridable Property Usuario As Usuario
+    Public Overridable Property Rol As Rol
+    Public Overridable Property Ordenes As ICollection(Of Orden) = New HashSet(Of Orden)
 
 End Class

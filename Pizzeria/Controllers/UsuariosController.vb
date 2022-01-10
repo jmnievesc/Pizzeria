@@ -9,107 +9,106 @@ Imports System.Web.Mvc
 Imports Pizzeria
 
 Namespace Controllers
-    Public Class TiposPizzaController
+    Public Class UsuariosController
         Inherits System.Web.Mvc.Controller
 
         Private db As New PizzeriaEntities
 
-        ' GET: TipoPizzas
+        ' GET: Usuarios
         <PermisosActionFilter>
         Function Index() As ActionResult
-            Return View(db.TiposPizza.ToList())
+            Dim usuarios = db.Usuarios.Include(Function(u) u.Rol)
+            Return View(usuarios.ToList())
         End Function
 
-        ' GET: TipoPizzas/Details/5
+        ' GET: Usuarios/Details/5
         <PermisosActionFilter>
         Function Details(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
-            Dim tipoPizza As TipoPizza = db.TiposPizza.Find(id)
-            If IsNothing(tipoPizza) Then
+            Dim usuario As Usuario = db.Usuarios.Find(id)
+            If IsNothing(usuario) Then
                 Return HttpNotFound()
             End If
-            Return View(tipoPizza)
+            Return View(usuario)
         End Function
 
-        ' GET: TipoPizzas/Create
+        ' GET: Usuarios/Create
         <PermisosActionFilter>
         Function Create() As ActionResult
+            ViewBag.IdRol = New SelectList(db.Roles, "Id", "Nombre")
             Return View()
         End Function
 
-        ' POST: TipoPizzas/Create
+        ' POST: Usuarios/Create
         'To protect from overposting attacks, enable the specific properties you want to bind to, for 
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <PermisosActionFilter>
-        Function Create(<Bind(Include:="Id,Nombre,CantidadPorciones,Descripcion,Precio,Tamanio")> ByVal tipoPizza As TipoPizza) As ActionResult
+        Function Create(<Bind(Include:="Id,NombreUsuario,Password,Activo,IdRol")> ByVal usuario As Usuario) As ActionResult
             If ModelState.IsValid Then
-                db.TiposPizza.Add(tipoPizza)
+                db.Usuarios.Add(usuario)
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
-            Return View(tipoPizza)
+            ViewBag.IdRol = New SelectList(db.Roles, "Id", "Nombre", usuario.IdRol)
+            Return View(usuario)
         End Function
 
-        ' GET: TipoPizzas/Edit/5
+        ' GET: Usuarios/Edit/5
         <PermisosActionFilter>
         Function Edit(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
-            Dim tipoPizza As TipoPizza = db.TiposPizza.Find(id)
-            If IsNothing(tipoPizza) Then
+            Dim usuario As Usuario = db.Usuarios.Find(id)
+            If IsNothing(usuario) Then
                 Return HttpNotFound()
             End If
-            Return View(tipoPizza)
+            ViewBag.IdRol = New SelectList(db.Roles, "Id", "Nombre", usuario.IdRol)
+            Return View(usuario)
         End Function
 
-        ' POST: TipoPizzas/Edit/5
+        ' POST: Usuarios/Edit/5
         'To protect from overposting attacks, enable the specific properties you want to bind to, for 
         'more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         <HttpPost()>
         <ValidateAntiForgeryToken()>
         <PermisosActionFilter>
-        Function Edit(<Bind(Include:="Id,Nombre,CantidadPorciones,Descripcion,Precio,Tamanio")> ByVal tipoPizza As TipoPizza) As ActionResult
+        Function Edit(<Bind(Include:="Id,NombreUsuario,Password,Activo,IdRol")> ByVal usuario As Usuario) As ActionResult
             If ModelState.IsValid Then
-                db.Entry(tipoPizza).State = EntityState.Modified
+                db.Entry(usuario).State = EntityState.Modified
                 db.SaveChanges()
                 Return RedirectToAction("Index")
             End If
-            Return View(tipoPizza)
+            ViewBag.IdRol = New SelectList(db.Roles, "Id", "Nombre", usuario.IdRol)
+            Return View(usuario)
         End Function
 
-        ' GET: TipoPizzas/Delete/5
+        ' GET: Usuarios/Delete/5
         <PermisosActionFilter>
         Function Delete(ByVal id As Integer?) As ActionResult
             If IsNothing(id) Then
                 Return New HttpStatusCodeResult(HttpStatusCode.BadRequest)
             End If
-            Dim tipoPizza As TipoPizza = db.TiposPizza.Find(id)
-            If IsNothing(tipoPizza) Then
+            Dim usuario As Usuario = db.Usuarios.Find(id)
+            If IsNothing(usuario) Then
                 Return HttpNotFound()
             End If
-            If tipoPizza.Ordenes.Any Then
-                TempData("Message") = "No se puede eliminar el tipo " + tipoPizza.Nombre + " porque hay ordenes asociadas"
-                Return RedirectToAction("Index")
-            End If
-            Return View(tipoPizza)
+            Return View(usuario)
         End Function
 
-        ' POST: TipoPizzas/Delete/5
+        ' POST: Usuarios/Delete/5
         <HttpPost()>
         <ActionName("Delete")>
         <ValidateAntiForgeryToken()>
         <PermisosActionFilter>
         Function DeleteConfirmed(ByVal id As Integer) As ActionResult
-            Dim tipoPizza As TipoPizza = db.TiposPizza.Find(id)
-            db.TiposPizza.Remove(tipoPizza)
+            Dim usuario As Usuario = db.Usuarios.Find(id)
+            db.Usuarios.Remove(usuario)
             db.SaveChanges()
-
-            TempData("Message") = "El registro se ha elminado correctamente"
             Return RedirectToAction("Index")
         End Function
 

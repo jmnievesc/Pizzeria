@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - Mi Pizzeria</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -16,26 +17,40 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", New With { .area = "" }, New With { .class = "navbar-brand" })
+                @Html.ActionLink("Pizzeria", "Index", "Home", New With {.area = ""}, New With {.class = "navbar-brand"})
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Ordenes", "Index", "Ordenes")</li>
-                    <li>@Html.ActionLink("Tipos de Pizza", "Index", "TiposPizza")</li>
-                </ul>
+                @If SesionUsuario.EstaAutenticado Then
+                    @<ul Class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.Raw(HtmlExtensions.Link("Ordenes", "Index", "Ordenes"))</li>
+                        <li>@Html.Raw(HtmlExtensions.Link("Tipos de Pizza", "Index", "TiposPizza"))</li>
+                        <li>@Html.Raw(HtmlExtensions.Link("Usuarios", "Index", "Usuarios"))</li>
+                        <li>@Html.Raw(HtmlExtensions.Link("Roles", "Index", "Roles"))</li>
+                                                                                                                            
+                    </ul>
+                End If
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
     <div class="container body-content">
+        @Code
+            Dim message = TempData("Message")
+        End Code
+            @If (message IsNot Nothing) Then
+
+                @<div class="alert alert-info">@message.ToString</div>
+            End If
+
+
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Pizzeria Prueba Desarrollo</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required:=False)
 </body>

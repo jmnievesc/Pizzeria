@@ -1,9 +1,9 @@
 ﻿@ModelType Pizzeria.Orden
 @Code
-    ViewData("Title") = "Details"
+    ViewData("Title") = "Detalles orden: No. " & Model.Numero
 End Code
 
-<h2>Details</h2>
+<h2>@(ViewData("Title").ToString)</h2>
 
 <div>
     <h4>Orden</h4>
@@ -61,5 +61,5 @@ End Code
 </div>
 <p>
     @Html.ActionLink("Editar", "Edit", New With {.id = Model.Id}, New With {.class = "btn btn-info"})
-    @Html.ActionLink("Regresar", "Index", "", New With {.class = "btn btn-warning"})
+    @Html.ActionLink("Regresar", "Index", "Home", "", New With {.class = "btn btn-warning"})
 </p>

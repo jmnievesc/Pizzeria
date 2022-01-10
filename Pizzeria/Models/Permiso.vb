@@ -10,19 +10,12 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Orden
+Partial Public Class Permiso
     Public Property Id As Integer
-    Public Property Numero As Integer
-    Public Property NombreCliente As String
-    Public Property Fecha As Date
-    Public Property DireccionEnvio As String
-    Public Property Comentarios As String
-    Public Property Estado As Integer
-    Public Property IdTipoPizza As Integer
-    Public Property Cantidad As Integer
-    Public Property IdUsuario As Integer
+    Public Property IdRol As Integer
+    Public Property IdAccion As Integer
 
-    Public Overridable Property TipoPizza As TipoPizza
-    Public Overridable Property Usuario As Usuario
+    Public Overridable Property Accion As Accion
+    Public Overridable Property Rol As Rol
 
 End Class

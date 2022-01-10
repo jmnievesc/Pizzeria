@@ -159,11 +159,23 @@
     <Compile Include="App_Start\FilterConfig.vb" />
     <Compile Include="App_Start\RouteConfig.vb" />
     <Compile Include="Controllers\OrdenesController.vb" />
+    <Compile Include="Controllers\RolesController.vb" />
     <Compile Include="Controllers\TipoPizzasController.vb" />
+    <Compile Include="Controllers\UsuariosController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HtmlExtensions.vb" />
+    <Compile Include="Helpers\PermisosActionFilter.vb" />
+    <Compile Include="Helpers\SesionUsuario.vb" />
     <Compile Include="Helpers\Utils.vb" />
+    <Compile Include="Models\Accion.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Controlador.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginViewModel.vb" />
     <Compile Include="Models\ModelMetadata.vb" />
     <Compile Include="Models\Model.Context.vb">
       <AutoGen>True</AutoGen>
@@ -183,7 +195,16 @@
     <Compile Include="Models\Orden.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Permiso.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rol.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TipoPizza.vb">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Usuario.vb">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -271,6 +292,21 @@
     <Content Include="Views\Ordenes\Edit.vbhtml" />
     <Content Include="Views\Ordenes\Index.vbhtml" />
     <Content Include="Views\Ordenes\Create.vbhtml" />
+    <Content Include="Views\Roles\_form.vbhtml" />
+    <Content Include="Views\Roles\Delete.vbhtml" />
+    <Content Include="Views\Roles\Details.vbhtml" />
+    <Content Include="Views\Roles\Edit.vbhtml" />
+    <Content Include="Views\Roles\Index.vbhtml" />
+    <Content Include="Views\Usuarios\_form.vbhtml" />
+    <Content Include="Views\Usuarios\Delete.vbhtml" />
+    <Content Include="Views\Usuarios\Details.vbhtml" />
+    <Content Include="Views\Usuarios\Edit.vbhtml" />
+    <Content Include="Views\Usuarios\Index.vbhtml" />
+    <Content Include="Views\Roles\Create.vbhtml" />
+    <Content Include="Views\Usuarios\Create.vbhtml" />
+    <Content Include="Views\Home\Login.vbhtml" />
+    <Content Include="Views\Shared\_LoginPartial.vbhtml" />
+    <Content Include="Views\Roles\Permisos.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

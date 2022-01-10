@@ -5,11 +5,26 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PizzeriaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IdControlador" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Controlador">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Orden">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Numero" Type="int" Nullable="false" />
           <Property Name="NombreCliente" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Fecha" Type="datetime" Nullable="false" />
@@ -18,6 +33,24 @@
           <Property Name="Estado" Type="int" Nullable="false" />
           <Property Name="IdTipoPizza" Type="int" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRol" Type="int" Nullable="false" />
+          <Property Name="IdAccion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="EsAdmin" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TipoPizza">
           <Key>
@@ -30,6 +63,28 @@
           <Property Name="Precio" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Tamanio" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="IdRol" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Accion_Controlador">
+          <End Role="Controlador" Type="Self.Controlador" Multiplicity="1" />
+          <End Role="Accion" Type="Self.Accion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Controlador">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Accion">
+              <PropertyRef Name="IdControlador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orden_TipoPizza">
           <End Role="TipoPizza" Type="Self.TipoPizza" Multiplicity="1" />
           <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
@@ -42,12 +97,85 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orden_Usuario">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Orden" Type="Self.Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Accion">
+          <End Role="Accion" Type="Self.Accion" Multiplicity="1" />
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permiso">
+              <PropertyRef Name="IdAccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Rol">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="Permiso" Type="Self.Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permiso">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Rol">
+          <End Role="Rol" Type="Self.Rol" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PizzeriaModelStoreContainer">
+          <EntitySet Name="Accion" EntityType="Self.Accion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Controlador" EntityType="Self.Controlador" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orden" EntityType="Self.Orden" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permiso" EntityType="Self.Permiso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol" EntityType="Self.Rol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoPizza" EntityType="Self.TipoPizza" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Accion_Controlador" Association="Self.FK_Accion_Controlador">
+            <End Role="Controlador" EntitySet="Controlador" />
+            <End Role="Accion" EntitySet="Accion" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orden_TipoPizza" Association="Self.FK_Orden_TipoPizza">
             <End Role="TipoPizza" EntitySet="TipoPizza" />
             <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orden_Usuario" Association="Self.FK_Orden_Usuario">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Orden" EntitySet="Orden" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Accion" Association="Self.FK_Permiso_Accion">
+            <End Role="Accion" EntitySet="Accion" />
+            <End Role="Permiso" EntitySet="Permiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Rol" Association="Self.FK_Permiso_Rol">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Permiso" EntitySet="Permiso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Rol" Association="Self.FK_Usuario_Rol">
+            <End Role="Rol" EntitySet="Rol" />
+            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -68,6 +196,8 @@
           <Property Name="IdTipoPizza" Type="Int32" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TipoPizza" Relationship="PizzeriaModel.FK_Orden_TipoPizza" FromRole="Orden" ToRole="TipoPizza" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Usuario" Relationship="PizzeriaModel.FK_Orden_Usuario" FromRole="Orden" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="TipoPizza">
           <Key>
@@ -79,13 +209,38 @@
           <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Precio" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="Tamanio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Ordens" Relationship="PizzeriaModel.FK_Orden_TipoPizza" FromRole="TipoPizza" ToRole="Orden" />
+          <NavigationProperty Name="Ordenes" Relationship="PizzeriaModel.FK_Orden_TipoPizza" FromRole="TipoPizza" ToRole="Orden" />
         </EntityType>
         <EntityContainer Name="PizzeriaEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Ordenes" EntityType="Self.Orden" />
           <EntitySet Name="TiposPizza" EntityType="Self.TipoPizza" />
           <AssociationSet Name="FK_Orden_TipoPizza" Association="PizzeriaModel.FK_Orden_TipoPizza">
             <End Role="TipoPizza" EntitySet="TiposPizza" />
+            <End Role="Orden" EntitySet="Ordenes" />
+          </AssociationSet>
+          <EntitySet Name="Acciones" EntityType="PizzeriaModel.Accion" />
+          <EntitySet Name="Controladores" EntityType="PizzeriaModel.Controlador" />
+          <EntitySet Name="Permisos" EntityType="PizzeriaModel.Permiso" />
+          <EntitySet Name="Roles" EntityType="PizzeriaModel.Rol" />
+          <EntitySet Name="Usuarios" EntityType="PizzeriaModel.Usuario" />
+          <AssociationSet Name="FK_Accion_Controlador" Association="PizzeriaModel.FK_Accion_Controlador">
+            <End Role="Controlador" EntitySet="Controladores" />
+            <End Role="Accion" EntitySet="Acciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Accion" Association="PizzeriaModel.FK_Permiso_Accion">
+            <End Role="Accion" EntitySet="Acciones" />
+            <End Role="Permiso" EntitySet="Permisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Permiso_Rol" Association="PizzeriaModel.FK_Permiso_Rol">
+            <End Role="Rol" EntitySet="Roles" />
+            <End Role="Permiso" EntitySet="Permisos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Rol" Association="PizzeriaModel.FK_Usuario_Rol">
+            <End Role="Rol" EntitySet="Roles" />
+            <End Role="Usuario" EntitySet="Usuarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orden_Usuario" Association="PizzeriaModel.FK_Orden_Usuario">
+            <End Role="Usuario" EntitySet="Usuarios" />
             <End Role="Orden" EntitySet="Ordenes" />
           </AssociationSet>
           </EntityContainer>
@@ -101,6 +256,117 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Accion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IdControlador" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Controlador" Relationship="PizzeriaModel.FK_Accion_Controlador" FromRole="Accion" ToRole="Controlador" />
+          <NavigationProperty Name="Permisos" Relationship="PizzeriaModel.FK_Permiso_Accion" FromRole="Accion" ToRole="Permiso" />
+        </EntityType>
+        <EntityType Name="Controlador">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Acciones" Relationship="PizzeriaModel.FK_Accion_Controlador" FromRole="Controlador" ToRole="Accion" />
+        </EntityType>
+        <EntityType Name="Permiso">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <Property Name="IdAccion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Accion" Relationship="PizzeriaModel.FK_Permiso_Accion" FromRole="Permiso" ToRole="Accion" />
+          <NavigationProperty Name="Rol" Relationship="PizzeriaModel.FK_Permiso_Rol" FromRole="Permiso" ToRole="Rol" />
+        </EntityType>
+        <EntityType Name="Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Permisos" Relationship="PizzeriaModel.FK_Permiso_Rol" FromRole="Rol" ToRole="Permiso" />
+          <NavigationProperty Name="Usuarios" Relationship="PizzeriaModel.FK_Usuario_Rol" FromRole="Rol" ToRole="Usuario" />
+          <Property Name="EsAdmin" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rol" Relationship="PizzeriaModel.FK_Usuario_Rol" FromRole="Usuario" ToRole="Rol" />
+          <NavigationProperty Name="Ordenes" Relationship="PizzeriaModel.FK_Orden_Usuario" FromRole="Usuario" ToRole="Orden" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Accion_Controlador">
+          <End Type="PizzeriaModel.Controlador" Role="Controlador" Multiplicity="1" />
+          <End Type="PizzeriaModel.Accion" Role="Accion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Controlador">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Accion">
+              <PropertyRef Name="IdControlador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Accion">
+          <End Type="PizzeriaModel.Accion" Role="Accion" Multiplicity="1" />
+          <End Type="PizzeriaModel.Permiso" Role="Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permiso">
+              <PropertyRef Name="IdAccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Permiso_Rol">
+          <End Type="PizzeriaModel.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="PizzeriaModel.Permiso" Role="Permiso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Permiso">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Rol">
+          <End Type="PizzeriaModel.Rol" Role="Rol" Multiplicity="1" />
+          <End Type="PizzeriaModel.Usuario" Role="Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orden_Usuario">
+          <End Type="PizzeriaModel.Usuario" Role="Usuario" Multiplicity="1" />
+          <End Type="PizzeriaModel.Orden" Role="Orden" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Orden">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -110,6 +376,7 @@
           <EntitySetMapping Name="Ordenes">
             <EntityTypeMapping TypeName="PizzeriaModel.Orden">
               <MappingFragment StoreEntitySet="Orden">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="IdTipoPizza" ColumnName="IdTipoPizza" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -131,6 +398,53 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="Precio" ColumnName="Precio" />
                 <ScalarProperty Name="Tamanio" ColumnName="Tamanio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Acciones">
+            <EntityTypeMapping TypeName="PizzeriaModel.Accion">
+              <MappingFragment StoreEntitySet="Accion">
+                <ScalarProperty Name="IdControlador" ColumnName="IdControlador" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Controladores">
+            <EntityTypeMapping TypeName="PizzeriaModel.Controlador">
+              <MappingFragment StoreEntitySet="Controlador">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permisos">
+            <EntityTypeMapping TypeName="PizzeriaModel.Permiso">
+              <MappingFragment StoreEntitySet="Permiso">
+                <ScalarProperty Name="IdAccion" ColumnName="IdAccion" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="PizzeriaModel.Rol">
+              <MappingFragment StoreEntitySet="Rol">
+                <ScalarProperty Name="EsAdmin" ColumnName="EsAdmin" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="PizzeriaModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

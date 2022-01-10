@@ -5,9 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d0977558ef56465ba4b6e9f51871a3d7" Name="Diagram1">
-        <EntityTypeShape EntityType="PizzeriaModel.Orden" Width="1.5" PointX="5.625" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PizzeriaModel.TipoPizza" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PizzeriaModel.Orden" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PizzeriaModel.TipoPizza" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="PizzeriaModel.FK_Orden_TipoPizza" />
+        <EntityTypeShape EntityType="PizzeriaModel.Accion" Width="1.5" PointX="0.75" PointY="7.25" />
+        <EntityTypeShape EntityType="PizzeriaModel.Controlador" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="PizzeriaModel.Permiso" Width="1.5" PointX="5.125" PointY="5.875" />
+        <EntityTypeShape EntityType="PizzeriaModel.Rol" Width="1.5" PointX="8.25" PointY="5.125" />
+        <EntityTypeShape EntityType="PizzeriaModel.Usuario" Width="1.5" PointX="8.125" PointY="1.25" />
+        <AssociationConnector Association="PizzeriaModel.FK_Accion_Controlador" />
+        <AssociationConnector Association="PizzeriaModel.FK_Permiso_Accion" />
+        <AssociationConnector Association="PizzeriaModel.FK_Permiso_Rol" />
+        <AssociationConnector Association="PizzeriaModel.FK_Usuario_Rol" />
+        <AssociationConnector Association="PizzeriaModel.FK_Orden_Usuario" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

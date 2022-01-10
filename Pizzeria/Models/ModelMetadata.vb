@@ -51,3 +51,15 @@ Public Class OrdenMetadata
     <Display(Name:="Estado")>
     Public Property NombreEstado As Integer
 End Class
+
+<MetadataType(GetType(UsuarioMetadata))>
+Partial Public Class Usuario
+
+End Class
+
+
+Public Class UsuarioMetadata
+
+    <Display(Name:="Rol")>
+    Public Property IdRol As Integer
+End Class

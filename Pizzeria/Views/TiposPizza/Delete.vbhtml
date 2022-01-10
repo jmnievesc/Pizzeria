@@ -55,8 +55,8 @@ End Code
         @Html.AntiForgeryToken()
 
         @<div class="form-actions no-color">
-            <input type="submit" value="Eliminar" class="btn btn-warning" />
-            @Html.ActionLink("Regresar", "Index", "", New With {.class = "btn btn-info"})
-        </div>
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            @Html.ActionLink("Regresar", "Index", "", New With {.class = "btn btn-warning"})
+</div>
     End Using
 </div>
